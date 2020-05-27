@@ -10,44 +10,60 @@ import UIKit
 import SceneKit
 import ARKit
 
-class ViewController: UIViewController, ARSCNViewDelegate {
+class ViewController: UIViewController {
 
-    @IBOutlet var sceneView: ARSCNView!
-    @IBOutlet var statusLabel: UILabel!
-
-
-// MARK: - IBActions
-
-    @IBAction func onStyleButtonPressed(_ sender: UIButton) {
-
-    }
-
-    @IBAction func onResetButtonPressed(_ sender: UIButton) {
-
-    }
+  // MARK: - Properties
 
 
-// MARK: - Lifecycle
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+  // MARK: - Outlets
 
-        sceneView.delegate = self
-        sceneView.showsStatistics = true
-        let scene = SCNScene(named: "PokerDice.scnassets/SimpleScene.scn")!
-        sceneView.scene = scene
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+  @IBOutlet var sceneView: ARSCNView!
+  @IBOutlet var statusLabel: UILabel!
 
-        let configuration = ARWorldTrackingConfiguration()
-        sceneView.session.run(configuration)
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        sceneView.session.pause()
-    }
+
+  // MARK: - IBActions
+
+  @IBAction func onStyleButtonPressed(_ sender: UIButton) {
+
+  }
+
+  @IBAction func onResetButtonPressed(_ sender: UIButton) {
+
+  }
+
+  // MARK: - Lifecycle
+
+  override func viewDidLoad() {
+    super.viewDidLoad()
+
+    sceneView.delegate = self
+    sceneView.showsStatistics = true
+    let scene = SCNScene(named: "PokerDice.scnassets/SimpleScene.scn")!
+    sceneView.scene = scene
+  }
+
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+
+    let configuration = ARWorldTrackingConfiguration()
+    sceneView.session.run(configuration)
+  }
+
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+
+    sceneView.session.pause()
+  }
+
+  // MARK: - Initialization
+
+  
+}
+
+
+// MARK: - ARSCNViewDelegate
+
+extension ViewController: ARSCNViewDelegate {
+
 }
