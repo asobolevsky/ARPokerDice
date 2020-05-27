@@ -36,6 +36,10 @@ class ViewController: UIViewController {
 
   }
 
+  @IBAction func onDebugOptionsButtonPressed(_ sender: UIButton) {
+    
+  }
+
   // MARK: - Lifecycle
 
   override func viewDidLoad() {
@@ -89,6 +93,14 @@ class ViewController: UIViewController {
       self.statusLabel.text = self.trackingStatus
     }
   }
+
+  private func showOverlay() {
+
+  }
+
+  private func hideOverlay() {
+
+  }
 }
 
 
@@ -98,10 +110,12 @@ extension ViewController: ARSCNViewDelegate {
 
   func sessionWasInterrupted(_ session: ARSession) {
     trackingStatus = "AR Session Was Interrupted!"
+    showOverlay()
   }
 
   func sessionInterruptionEnded(_ session: ARSession) {
     trackingStatus = "AR Session Interruption Ended"
+    hideOverlay()
   }
 
   func session(_ session: ARSession, didFailWithError error: Error) {
