@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B4136A39247EBEA900A8F73F /* Planets.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = B4136A38247EBEA900A8F73F /* Planets.scnassets */; };
 		B439C5E4247D80100062C752 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B439C5E3247D80100062C752 /* AppDelegate.swift */; };
 		B439C5E8247D80110062C752 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B439C5E7247D80110062C752 /* ViewController.swift */; };
 		B439C5EB247D80110062C752 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B439C5E9247D80110062C752 /* Main.storyboard */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B4136A38247EBEA900A8F73F /* Planets.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Planets.scnassets; sourceTree = "<group>"; };
 		B439C5E0247D80100062C752 /* ARPokerDice.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARPokerDice.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B439C5E3247D80100062C752 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B439C5E7247D80110062C752 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -56,6 +58,7 @@
 		B439C5E2247D80100062C752 /* ARPokerDice */ = {
 			isa = PBXGroup;
 			children = (
+				B4136A38247EBEA900A8F73F /* Planets.scnassets */,
 				B439C5F7247D8C2F0062C752 /* PokerDice.scnassets */,
 				B439C5E3247D80100062C752 /* AppDelegate.swift */,
 				B439C5E7247D80110062C752 /* ViewController.swift */,
@@ -127,6 +130,7 @@
 			files = (
 				B439C5F8247D8C2F0062C752 /* PokerDice.scnassets in Resources */,
 				B439C5F0247D80140062C752 /* LaunchScreen.storyboard in Resources */,
+				B4136A39247EBEA900A8F73F /* Planets.scnassets in Resources */,
 				B439C5ED247D80140062C752 /* Assets.xcassets in Resources */,
 				B439C5EB247D80110062C752 /* Main.storyboard in Resources */,
 			);
