@@ -107,7 +107,15 @@ class ViewController: UIViewController {
     sceneView.session.run(config)
   }
 
-  // MARK: -
+  // MARK: Load models
+
+  
+
+  // MARK: - Helper functions
+
+
+
+  // MARK: - UI
 
   private func updateStatusLabel() {
     DispatchQueue.main.async {
@@ -122,6 +130,7 @@ class ViewController: UIViewController {
   private func hideOverlay() {
 
   }
+
 }
 
 
