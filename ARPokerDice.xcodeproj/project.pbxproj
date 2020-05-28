@@ -49,7 +49,10 @@
 				B439C5E2247D80100062C752 /* ARPokerDice */,
 				B439C5E1247D80100062C752 /* Products */,
 			);
+			indentWidth = 2;
 			sourceTree = "<group>";
+			tabWidth = 2;
+			usesTabs = 0;
 		};
 		B439C5E1247D80100062C752 /* Products */ = {
 			isa = PBXGroup;

@@ -37,7 +37,7 @@ class ViewController: UIViewController {
   }
 
   @IBAction func onDebugOptionsButtonPressed(_ sender: UIButton) {
-    
+
   }
 
   // MARK: - Lifecycle
@@ -63,6 +63,24 @@ class ViewController: UIViewController {
     sceneView.session.pause()
   }
 
+  override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    guard let identifier = segue.identifier else {
+      return
+    }
+
+    switch identifier {
+    case .debugOptionsSegueIdentifier:
+      if let debugOptionsController = segue.destination as? DebugOptionsViewController {
+        debugOptionsController.selectedOptions = sceneView.debugOptions
+        debugOptionsController.onDismissBlock = { [weak self] debugOptions in
+          self?.sceneView.debugOptions = debugOptions
+        }
+      }
+
+    default: break
+    }
+  }
+
   // MARK: - Initialization
 
   private func initSceneView() {
@@ -71,7 +89,10 @@ class ViewController: UIViewController {
   }
 
   private func initScene() {
-
+    if let scene = SCNScene(named: "Planets.scnassets/Planets.scn") {
+      scene.isPaused = false
+      sceneView.scene = scene
+    }
   }
 
   private func initARSession() {
@@ -145,4 +166,9 @@ extension ViewController: ARSCNViewDelegate {
       }
     }
   }
+}
+
+
+private extension String {
+  static let debugOptionsSegueIdentifier = "showDebugOptions"
 }

@@ -13,10 +13,12 @@ typealias DebugOption = (description: String, value: SCNDebugOptions)
 
 class DebugOptionsViewController: UIViewController {
 
-  @IBOutlet var optionsTableView: UITableView!
+  // MARK: - Properties
 
   private var debugOptions: [DebugOption] = {
     return [
+      ("Show the world origin in the scene", .showWorldOrigin),
+      ("Show detected 3D feature points in the world", .showFeaturePoints),
       ("Show physics shape", .showPhysicsShapes),
       ("Show object bounding boxes", .showBoundingBoxes),
       ("Show objects's light influences", .showLightInfluences),
@@ -27,17 +29,32 @@ class DebugOptionsViewController: UIViewController {
       ("Show skinning bones", .showSkeletons),
       ("Show subdivision creases", .showCreases),
       ("Show slider constraint", .showConstraints),
-      ("Show cameras", .showCameras)
+      ("Show cameras", .showCameras),
     ]
   }()
 
   var selectedOptions: SCNDebugOptions = []
+  var onDismissBlock: ((SCNDebugOptions) -> ())?
+
+  @IBOutlet var optionsTableView: UITableView!
+
+  // MARK: - Lifecycle
 
   override func viewDidLoad() {
     super.viewDidLoad()
     optionsTableView.delegate = self
     optionsTableView.dataSource = self
   }
+
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+
+    if isBeingDismissed {
+      onDismissBlock?(selectedOptions)
+    }
+  }
+
+  // MARK: - Private
 
   private func toggleDebugOption(_ option: SCNDebugOptions) {
     if selectedOptions.contains(option) {
@@ -64,6 +81,9 @@ extension DebugOptionsViewController: UITableViewDelegate {
     cell.selectedSwitch.isOn = !cell.selectedSwitch.isOn
     let option = debugOptions[indexPath.row]
     toggleDebugOption(option.value)
+
+    let generator = UIImpactFeedbackGenerator(style: .light)
+    generator.impactOccurred()
   }
 
 }

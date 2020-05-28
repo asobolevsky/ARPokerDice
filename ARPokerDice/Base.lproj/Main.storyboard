@@ -88,7 +88,7 @@
                                 <state key="normal" image="options"/>
                                 <connections>
                                     <action selector="onDebugOptionsButtonPressed:" destination="BV1-FR-VrT" eventType="touchUpInside" id="9zK-rz-BU4"/>
-                                    <segue destination="hJb-vg-xeP" kind="popoverPresentation" popoverAnchorView="yeL-BA-dHB" id="7Ts-n2-EDq">
+                                    <segue destination="hJb-vg-xeP" kind="popoverPresentation" identifier="showDebugOptions" popoverAnchorView="yeL-BA-dHB" id="7Ts-n2-EDq">
                                         <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
                                     </segue>
                                 </connections>
@@ -141,11 +141,11 @@
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="47.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="prd-x0-YFs">
+                                                <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="prd-x0-YFs">
                                                     <rect key="frame" x="16" y="8" width="382" height="31.5"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Va3-QA-6qe">
-                                                            <rect key="frame" x="0.0" y="0.0" width="317" height="31.5"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Va3-QA-6qe">
+                                                            <rect key="frame" x="0.0" y="0.0" width="183" height="31.5"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
