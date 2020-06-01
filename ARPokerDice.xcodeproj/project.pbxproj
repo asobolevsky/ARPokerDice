@@ -16,6 +16,7 @@
 		B439C5ED247D80140062C752 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B439C5EC247D80140062C752 /* Assets.xcassets */; };
 		B439C5F0247D80140062C752 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B439C5EE247D80140062C752 /* LaunchScreen.storyboard */; };
 		B439C5F8247D8C2F0062C752 /* PokerDice.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = B439C5F7247D8C2F0062C752 /* PokerDice.scnassets */; };
+		B43D3E652485590400B690F2 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = B43D3E642485590400B690F2 /* Game.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		B439C5EF247D80140062C752 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B439C5F1247D80140062C752 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B439C5F7247D8C2F0062C752 /* PokerDice.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = PokerDice.scnassets; sourceTree = "<group>"; };
+		B43D3E642485590400B690F2 /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +77,7 @@
 				B439C5F1247D80140062C752 /* Info.plist */,
 				B4136A3A247EDB3000A8F73F /* DebugOptionsViewController.swift */,
 				B4136A3C247EDE3400A8F73F /* DebugOptionTableViewCell.swift */,
+				B43D3E642485590400B690F2 /* Game.swift */,
 			);
 			path = ARPokerDice;
 			sourceTree = "<group>";
@@ -153,6 +156,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B4136A3D247EDE3400A8F73F /* DebugOptionTableViewCell.swift in Sources */,
+				B43D3E652485590400B690F2 /* Game.swift in Sources */,
 				B4136A3B247EDB3000A8F73F /* DebugOptionsViewController.swift in Sources */,
 				B439C5E8247D80110062C752 /* ViewController.swift in Sources */,
 				B439C5E4247D80100062C752 /* AppDelegate.swift in Sources */,

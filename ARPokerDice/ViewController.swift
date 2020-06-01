@@ -19,6 +19,14 @@ class ViewController: UIViewController {
     }
   }
 
+  let game = Game()
+  var diceCount: Int = 5
+  var diceStyle: Int = 0
+  var diceOffset: [SCNVector3] = [SCNVector3(0.0,0.0,0.0),
+                                  SCNVector3(-0.15, 0.00, 0.0),
+                                  SCNVector3(0.15, 0.00, 0.0),
+                                  SCNVector3(-0.15, 0.15, 0.12),
+                                  SCNVector3(0.15, 0.15, 0.12)]
 
   // MARK: - Outlets
 
@@ -29,15 +37,21 @@ class ViewController: UIViewController {
   // MARK: - IBActions
 
   @IBAction func onStyleButtonPressed(_ sender: UIButton) {
-
+    game.changeStyle()
   }
 
   @IBAction func onResetButtonPressed(_ sender: UIButton) {
 
   }
 
-  @IBAction func onDebugOptionsButtonPressed(_ sender: UIButton) {
+  @IBAction func onSwipeUp(_ sender: UISwipeGestureRecognizer) {
+    guard let frame = sceneView.session.currentFrame else {
+      return
+    }
 
+    for i in 0..<diceCount {
+      throwDice(transform: SCNMatrix4(frame.camera.transform), offset: diceOffset[i])
+    }
   }
 
   // MARK: - Lifecycle
@@ -48,6 +62,8 @@ class ViewController: UIViewController {
     initSceneView()
     initScene()
     initARSession()
+
+    game.loadModels()
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -89,10 +105,9 @@ class ViewController: UIViewController {
   }
 
   private func initScene() {
-    if let scene = SCNScene(named: "Planets.scnassets/Planets.scn") {
-      scene.isPaused = false
-      sceneView.scene = scene
-    }
+    let scene = SCNScene()
+    scene.isPaused = false
+    sceneView.scene = scene
   }
 
   private func initARSession() {
@@ -104,15 +119,30 @@ class ViewController: UIViewController {
     let config = ARWorldTrackingConfiguration()
     config.worldAlignment = .gravity
     config.providesAudioData = false
+    config.environmentTexturing = .automatic
     sceneView.session.run(config)
   }
-
-  // MARK: Load models
-
   
 
   // MARK: - Helper functions
 
+  private func throwDice(transform: SCNMatrix4, offset: SCNVector3) {
+    do {
+      try game.throwDice(transform: transform, offset: offset) { [unowned self] diceNode in
+        self.sceneView.scene.rootNode.addChildNode(diceNode)
+      }
+    } catch {
+      guard let gameError = error as? GameErrors else {
+        print("Unknown error: \(error)")
+        return
+      }
+      switch gameError {
+      case .maxDiceCountReached:
+        print("Max nnumber of dices has been reached")
+
+      }
+    }
+  }
 
 
   // MARK: - UI

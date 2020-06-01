@@ -44,6 +44,8 @@ class DebugOptionsViewController: UIViewController {
     super.viewDidLoad()
     optionsTableView.delegate = self
     optionsTableView.dataSource = self
+    optionsTableView.rowHeight = UITableView.automaticDimension
+    optionsTableView.estimatedRowHeight = 44
   }
 
   override func viewWillDisappear(_ animated: Bool) {
