@@ -21,13 +21,28 @@ enum DiceStyle: Int {
   case plate
 }
 
+enum GameState {
+  case detectSurface
+  case pointToSurface
+  case swipeToPlay
+}
+
 class Game {
 
   private let maxDiceCount = 5
   private var currentDiceCount = 0
   private var diceNodes: [DiceStyle: SCNNode] = [:]
   private var currentStyle: DiceStyle = .cracked
-  private var cursorNode: SCNNode!
+  var focusNode: SCNNode!
+
+  var gameState: GameState = .detectSurface {
+    didSet {
+      if oldValue != gameState {
+        stateUpdateCallback?(gameState)
+      }
+    }
+  }
+  var stateUpdateCallback: ((GameState) -> ())?
 
   func loadModels(into scene: SCNScene) {
     guard let diceScene = SCNScene(named: "PokerDice.scnassets/DiceScene.scn") else {
@@ -45,14 +60,14 @@ class Game {
       diceNodes[style] = diceNode
     }
 
-    guard let cursorScene = SCNScene(named: "PokerDice.scnassets/Models/Obelisk.scn"),
-      let cursorNode = cursorScene.rootNode.childNode(withName: "cursor", recursively: false) else {
+    guard let focusScene = SCNScene(named: "PokerDice.scnassets/Models/Obelisk.scn"),
+      let focusNode = focusScene.rootNode.childNode(withName: "focus", recursively: false) else {
       print("Could not load cursore mode")
       return
     }
 
-    self.cursorNode = cursorNode
-    scene.rootNode.addChildNode(cursorNode)
+    self.focusNode = focusNode
+    scene.rootNode.addChildNode(focusNode)
   }
 
   func throwDice(transform: SCNMatrix4,
