@@ -28,6 +28,7 @@ class ViewController: UIViewController {
                                   SCNVector3(-0.15, 0.15, 0.12),
                                   SCNVector3(0.15, 0.15, 0.12)]
   var focusPoint: CGPoint = .zero
+  var coachingOverlay: ARCoachingOverlayView!
 
   // MARK: - Outlets
 
@@ -65,7 +66,7 @@ class ViewController: UIViewController {
     initCoachingOverlayView()
     initGame()
   }
-
+  
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
 
@@ -147,7 +148,7 @@ class ViewController: UIViewController {
   }
 
   private func initCoachingOverlayView() {
-    let coachingOverlay = ARCoachingOverlayView()
+    coachingOverlay = ARCoachingOverlayView()
     coachingOverlay.session = sceneView.session
     coachingOverlay.activatesAutomatically = true
     coachingOverlay.goal = .horizontalPlane
@@ -207,6 +208,10 @@ class ViewController: UIViewController {
     planeNode.position = SCNVector3Make(planeAnchor.center.x, 0, planeAnchor.center.z)
   }
 
+  private func removeARPlaneNode(node: SCNNode) {
+
+  }
+
   private func updateFocusNode() {
     let result = sceneView.hitTest(focusPoint, types: [.existingPlaneUsingExtent])
 
@@ -255,11 +260,11 @@ class ViewController: UIViewController {
   }
 
   private func showOverlay() {
-
+    coachingOverlay.setActive(true, animated: true)
   }
 
   private func hideOverlay() {
-
+    coachingOverlay.setActive(false, animated: true)
   }
 
 }
@@ -331,6 +336,16 @@ extension ViewController: ARSCNViewDelegate {
     print("Did update plane")
     DispatchQueue.main.async {
       self.updateARPlaneNode(planeNode: planeNode, planeAnchor: planeAnchor)
+    }
+  }
+
+  func renderer(_ renderer: SCNSceneRenderer, didRemove node: SCNNode, for anchor: ARAnchor) {
+    guard let planeNode = node.childNodes.first else {
+      return
+    }
+    print("Did remove plane")
+    DispatchQueue.main.async {
+      self.removeARPlaneNode(node: planeNode)
     }
   }
 }
