@@ -11,12 +11,20 @@ import SceneKit
 
 typealias DebugOption = (description: String, value: SCNDebugOptions)
 
+enum SliderDebugOption: Hashable {
+  case worldSpeed
+}
+
 class DebugOptionsViewController: UIViewController {
 
   // MARK: - Properties
 
-  private var debugOptions: [DebugOption] = {
-    return [
+  private var sectionTitles: [String] = [
+    "UI options",
+    "Physics"
+  ]
+
+  private var switchDebugOptions: [DebugOption] = [
       ("Show the world origin in the scene", .showWorldOrigin),
       ("Show detected 3D feature points in the world", .showFeaturePoints),
       ("Show physics shape", .showPhysicsShapes),
@@ -31,10 +39,17 @@ class DebugOptionsViewController: UIViewController {
       ("Show slider constraint", .showConstraints),
       ("Show cameras", .showCameras),
     ]
-  }()
+
+  private var sliderDebugOptionTitles: [SliderDebugOption: String] = [
+    .worldSpeed: "World Speed"
+  ]
 
   var selectedOptions: SCNDebugOptions = []
-  var onDismissBlock: ((SCNDebugOptions) -> ())?
+  var currentSliderOptionValues: [SliderDebugOption: CGFloat] = [:]
+  var sliderOptions: [SliderDebugOption] {
+    return Array(currentSliderOptionValues.keys)
+  }
+  var onDismissBlock: ((SCNDebugOptions, [SliderDebugOption: CGFloat]) -> ())?
 
   @IBOutlet var optionsTableView: UITableView!
 
@@ -52,7 +67,7 @@ class DebugOptionsViewController: UIViewController {
     super.viewWillDisappear(animated)
 
     if isBeingDismissed {
-      onDismissBlock?(selectedOptions)
+      onDismissBlock?(selectedOptions, currentSliderOptionValues)
     }
   }
 
@@ -76,12 +91,12 @@ extension DebugOptionsViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     tableView.deselectRow(at: indexPath, animated: true)
 
-    guard let cell = tableView.cellForRow(at: indexPath) as? DebugOptionTableViewCell else {
+    guard let cell = tableView.cellForRow(at: indexPath) as? DebugSwitchOptionTableViewCell else {
       return
     }
 
     cell.selectedSwitch.isOn = !cell.selectedSwitch.isOn
-    let option = debugOptions[indexPath.row]
+    let option = switchDebugOptions[indexPath.row]
     toggleDebugOption(option.value)
 
     let generator = UIImpactFeedbackGenerator(style: .light)
@@ -95,14 +110,37 @@ extension DebugOptionsViewController: UITableViewDelegate {
 
 extension DebugOptionsViewController: UITableViewDataSource {
 
+  func numberOfSections(in tableView: UITableView) -> Int {
+    return sectionTitles.count
+  }
+
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return debugOptions.count
+    switch section {
+    case 0: return switchDebugOptions.count
+    case 1: return sliderOptions.count
+
+    default: fatalError("Unexpected section \(section)")
+    }
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCell(withIdentifier: "debugOption", for: indexPath) as! DebugOptionTableViewCell
+    switch indexPath.section {
+    case 0: return configureSwitchOptionCell(in: tableView, for: indexPath)
+    case 1: return configureSliderOptionCell(in: tableView, for: indexPath)
 
-    let option = debugOptions[indexPath.row]
+    default: fatalError("Unexpected section \(indexPath.section)")
+    }
+  }
+
+  func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    return sectionTitles[section]
+  }
+
+  private func configureSwitchOptionCell(in tableView: UITableView, for indexPath: IndexPath) -> DebugSwitchOptionTableViewCell {
+    print(tableView.dequeueReusableCell(withIdentifier: .debugSwitchOptionCellIdentifier, for: indexPath))
+    let cell = tableView.dequeueReusableCell(withIdentifier: .debugSwitchOptionCellIdentifier, for: indexPath) as! DebugSwitchOptionTableViewCell
+
+    let option = switchDebugOptions[indexPath.row]
     cell.descriptionLabel.text = option.description
     cell.selectedSwitch.isOn = selectedOptions.contains(option.value)
     cell.onSelectAction = { [unowned self] _ in
@@ -112,4 +150,25 @@ extension DebugOptionsViewController: UITableViewDataSource {
     return cell
   }
 
+  private func configureSliderOptionCell(in tableView: UITableView, for indexPath: IndexPath) -> DebugSliderOptionTableViewCell {
+    let cell = tableView.dequeueReusableCell(withIdentifier: .debugSliderOptionCellIdentifier, for: indexPath) as! DebugSliderOptionTableViewCell
+
+    let option = sliderOptions[indexPath.row]
+    let value: CGFloat = currentSliderOptionValues[option] ?? 0.0
+    cell.descriptionLabel.text = sliderDebugOptionTitles[option]
+    cell.valueLabel.text = String(format: "%.2f", value)
+    cell.valueSlider.value = Float(value)
+
+    cell.onValueChangeAction = { [unowned self] value in
+      self.currentSliderOptionValues[option] = value
+    }
+
+    return cell
+  }
+
+}
+
+private extension String {
+  static let debugSwitchOptionCellIdentifier = "debugSwitchOption"
+  static let debugSliderOptionCellIdentifier = "debugSliderOption"
 }

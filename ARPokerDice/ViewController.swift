@@ -10,6 +10,8 @@ import UIKit
 import SceneKit
 import ARKit
 
+let kDefaultWorldSpeed: CGFloat = 0.05
+
 class ViewController: UIViewController {
 
   // MARK: - Properties
@@ -66,7 +68,7 @@ class ViewController: UIViewController {
     initCoachingOverlayView()
     initGame()
   }
-  
+
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
 
@@ -88,8 +90,17 @@ class ViewController: UIViewController {
     case .debugOptionsSegueIdentifier:
       if let debugOptionsController = segue.destination as? DebugOptionsViewController {
         debugOptionsController.selectedOptions = sceneView.debugOptions
-        debugOptionsController.onDismissBlock = { [weak self] debugOptions in
+        debugOptionsController.currentSliderOptionValues = [
+          .worldSpeed: sceneView.scene.physicsWorld.speed
+        ]
+        debugOptionsController.onDismissBlock = { [weak self] debugOptions, sliderOptionValues in
           self?.sceneView.debugOptions = debugOptions
+
+          for (option, value) in sliderOptionValues {
+            switch option {
+              case .worldSpeed: self?.sceneView.scene.physicsWorld.speed = value
+            }
+          }
         }
       }
 
@@ -117,6 +128,7 @@ class ViewController: UIViewController {
   private func initScene() {
     let scene = SCNScene()
     scene.isPaused = false
+    scene.physicsWorld.speed = kDefaultWorldSpeed
     sceneView.scene = scene
   }
 

@@ -1,5 +1,5 @@
 //
-//  DebugOptionTableViewCell.swift
+//  DebugSwitchOptionTableViewCell.swift
 //  ARPokerDice
 //
 //  Created by Alexey Sobolevsky on 27.05.2020.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DebugOptionTableViewCell: UITableViewCell {
+class DebugSwitchOptionTableViewCell: UITableViewCell {
 
   @IBOutlet var descriptionLabel: UILabel!
   @IBOutlet var selectedSwitch: UISwitch!

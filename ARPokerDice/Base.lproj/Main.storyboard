@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BV1-FR-VrT">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BV1-FR-VrT">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
@@ -142,31 +142,31 @@
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="808"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="debugOption" rowHeight="60" id="0uR-uE-zwp" customClass="DebugOptionTableViewCell" customModule="ARPokerDice" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="414" height="60"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="debugSwitchOption" rowHeight="80" id="0uR-uE-zwp" customClass="DebugSwitchOptionTableViewCell">
+                                        <rect key="frame" x="0.0" y="28" width="414" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="0uR-uE-zwp" id="qie-if-uJI">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="60"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="80"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="prd-x0-YFs">
-                                                    <rect key="frame" x="16" y="8" width="382" height="44"/>
+                                                    <rect key="frame" x="16" y="8" width="382" height="64"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Show the world origin in the scene" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Va3-QA-6qe">
-                                                            <rect key="frame" x="0.0" y="0.0" width="183" height="44"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="183" height="64"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Hxi-4z-0Z9">
-                                                            <rect key="frame" x="333" y="0.0" width="51" height="44"/>
+                                                            <rect key="frame" x="333" y="0.0" width="51" height="64"/>
                                                             <connections>
                                                                 <action selector="onSwitchValueChanged:" destination="0uR-uE-zwp" eventType="valueChanged" id="yVM-xg-9X1"/>
                                                             </connections>
                                                         </switch>
                                                     </subviews>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="60" id="g9R-nF-3Xm"/>
+                                                        <constraint firstAttribute="height" constant="80" id="g9R-nF-3Xm"/>
                                                     </constraints>
                                                 </stackView>
                                             </subviews>
@@ -178,8 +178,59 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="descriptionLabel" destination="Va3-QA-6qe" id="aRI-2U-wG5"/>
-                                            <outlet property="selectedSwitch" destination="Hxi-4z-0Z9" id="Iwa-1z-u8y"/>
+                                            <outlet property="selectedSwitch" destination="Hxi-4z-0Z9" id="Ziz-Qt-LyK"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="debugSliderOption" rowHeight="80" id="ZRo-QC-MoX" customClass="DebugSliderOptionTableViewCell" customModule="ARPokerDice" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="108" width="414" height="80"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ZRo-QC-MoX" id="f5L-cc-wyj">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="80"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="SeW-ZB-Uld">
+                                                    <rect key="frame" x="16" y="8" width="382" height="64"/>
+                                                    <subviews>
+                                                        <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xU3-Zw-g9k">
+                                                            <rect key="frame" x="0.0" y="0.0" width="382" height="20.5"/>
+                                                            <subviews>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Some very long long long title" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="46a-oD-6Ix">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="191" height="20.5"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                    <nil key="textColor"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="Value" textAlignment="right" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eJX-wi-Skt">
+                                                                    <rect key="frame" x="191" y="0.0" width="191" height="20.5"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                    <nil key="textColor"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                            </subviews>
+                                                        </stackView>
+                                                        <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="fMO-IK-SNU">
+                                                            <rect key="frame" x="-2" y="36.5" width="386" height="28.5"/>
+                                                            <connections>
+                                                                <action selector="onSliderValueChanged:" destination="ZRo-QC-MoX" eventType="valueChanged" id="yAD-vx-hTh"/>
+                                                            </connections>
+                                                        </slider>
+                                                    </subviews>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="80" id="Azx-gm-gyX"/>
+                                                    </constraints>
+                                                </stackView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="SeW-ZB-Uld" secondAttribute="bottom" constant="8" id="R4u-X7-Kmx"/>
+                                                <constraint firstItem="SeW-ZB-Uld" firstAttribute="top" secondItem="f5L-cc-wyj" secondAttribute="top" constant="8" id="XsE-Jo-1Xn"/>
+                                                <constraint firstAttribute="trailing" secondItem="SeW-ZB-Uld" secondAttribute="trailing" constant="16" id="igX-k7-m80"/>
+                                                <constraint firstItem="SeW-ZB-Uld" firstAttribute="leading" secondItem="f5L-cc-wyj" secondAttribute="leading" constant="16" id="zv0-ni-bKi"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="descriptionLabel" destination="46a-oD-6Ix" id="4OH-u5-D9r"/>
+                                            <outlet property="valueLabel" destination="eJX-wi-Skt" id="1vh-vq-Hcp"/>
+                                            <outlet property="valueSlider" destination="fMO-IK-SNU" id="3Hz-lV-93K"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
