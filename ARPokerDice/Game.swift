@@ -129,7 +129,7 @@ class Game {
   }
   
   func start() {
-    gameState = .pointToSurface
+    gameState = .swipeToPlay
   }
   
   func reset() {

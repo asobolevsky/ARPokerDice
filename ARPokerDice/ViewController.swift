@@ -23,18 +23,15 @@ class ViewController: UIViewController {
   }
   
   let game = Game(diceCount: kDiceCount)
-  var diceOffset: [SCNVector3] = [SCNVector3(0.0,0.0,0.0),
-                                  SCNVector3(-0.15, 0.00, 0.0),
-                                  SCNVector3(0.15, 0.00, 0.0),
-                                  SCNVector3(-0.15, 0.15, 0.12),
-                                  SCNVector3(0.15, 0.15, 0.12)]
   var focusPoint: CGPoint = .zero
+  var gameHasStarted = false
   var coachingOverlay: ARCoachingOverlayView!
   
   // MARK: - Outlets
   
   @IBOutlet var sceneView: ARSCNView!
   @IBOutlet var statusLabel: UILabel!
+  @IBOutlet var startButton: UIButton!
   @IBOutlet var hudLabel: UILabel!
   
   
@@ -208,11 +205,13 @@ class ViewController: UIViewController {
   // MARK: - Helper functions
   
   private func startGame() {
-    guard game.gameState == .detectSurface else {
+    guard game.gameState == .pointToSurface else {
       return
     }
     
     DispatchQueue.main.async {
+      self.gameHasStarted = true
+      self.startButton.isHidden = true
       self.suspendARPlaneDetection()
       self.hideARPlaneNode()
       self.game.start()
@@ -324,7 +323,9 @@ class ViewController: UIViewController {
       game.focusNode.position = SCNVector3(x: t.columns.3.x,
                                            y: t.columns.3.y,
                                            z: t.columns.3.z)
-      game.gameState = .swipeToPlay
+      if gameHasStarted {
+        game.gameState = .swipeToPlay
+      }
       game.focusNode.isHidden = false
     } else {
       game.gameState = .pointToSurface

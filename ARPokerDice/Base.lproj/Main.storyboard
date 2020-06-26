@@ -146,6 +146,7 @@
                     <connections>
                         <outlet property="hudLabel" destination="pnx-Xz-y52" id="KkF-h8-W34"/>
                         <outlet property="sceneView" destination="BrB-h1-WRS" id="5nT-qQ-ynl"/>
+                        <outlet property="startButton" destination="lK5-VR-kbL" id="cUj-1C-XYJ"/>
                         <outlet property="statusLabel" destination="iv5-cH-15x" id="IvZ-mF-d0b"/>
                     </connections>
                 </viewController>
