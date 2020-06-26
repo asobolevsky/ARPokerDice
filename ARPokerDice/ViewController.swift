@@ -51,7 +51,7 @@ class ViewController: UIViewController {
   @IBAction func onStartButtonPressed(_ sender: UIButton) {
     startGame()
   }
-  p. 138
+  
   @IBAction func onSwipeUp(_ sender: UISwipeGestureRecognizer) {
     guard game.gameState == .swipeToPlay else {
       return
@@ -85,6 +85,25 @@ class ViewController: UIViewController {
     super.viewWillDisappear(animated)
     
     sceneView.session.pause()
+  }
+  
+  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    DispatchQueue.main.async {
+      guard let touchLocation = touches.first?.location(in: self.sceneView) else {
+        return
+      }
+      
+      guard let hit = self.sceneView.hitTest(touchLocation, options: nil).first else {
+        return
+      }
+      
+      guard hit.node.name == .diceNodeName else {
+        return
+      }
+      
+      hit.node.removeFromParentNode()
+      self.game.currentDiceCount -= 1
+    }
   }
   
   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
