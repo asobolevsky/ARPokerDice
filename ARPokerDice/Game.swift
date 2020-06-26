@@ -29,8 +29,18 @@ enum GameState {
 
 class Game {
 
-  private let maxDiceCount = 5
-  private var currentDiceCount = 0
+  let maxDiceCount: Int
+  var currentDiceCount = 0 {
+    didSet {
+      stateDidChange?()
+    }
+  }
+  var currentDiceStyle: DiceStyle = .cracked {
+     didSet {
+       stateDidChange?()
+     }
+   }
+
   private var diceNodes: [DiceStyle: SCNNode] = [:]
   private var currentStyle: DiceStyle = .cracked
   var focusNode: SCNNode!
@@ -38,11 +48,16 @@ class Game {
   var gameState: GameState = .detectSurface {
     didSet {
       if oldValue != gameState {
-        stateUpdateCallback?(gameState)
+        gameStateDidChange?(oldValue, gameState)
       }
     }
   }
-  var stateUpdateCallback: ((GameState) -> ())?
+  var stateDidChange: (() -> ())?
+  var gameStateDidChange: ((GameState, GameState) -> ())?
+
+  init(diceCount: Int) {
+    maxDiceCount = diceCount
+  }
 
   func loadModels(into scene: SCNScene) {
     guard let diceScene = SCNScene(named: "PokerDice.scnassets/DiceScene.scn") else {
@@ -77,18 +92,31 @@ class Game {
       throw GameErrors.maxDiceCountReached
     }
 
-    let position = SCNVector3(transform.m41 + offset.x,
-                              transform.m42 + offset.y,
-                              transform.m43 + offset.z)
-
     guard let diceNode = diceNodes[currentStyle]?.clone() else {
       print("Could not find node with style: \(currentStyle)")
       return
     }
 
-    diceNode.name = "dice"
-    diceNode.position = position
+    let position = SCNVector3(transform.m41 + offset.x,
+                              transform.m42 + offset.y,
+                              transform.m43 + offset.z)
 
+    let rotation = SCNVector3(Double.random(min: 0, max: Double.pi),
+                              Double.random(min: 0, max: Double.pi),
+                              Double.random(min: 0, max: Double.pi))
+
+    let distance = simd_distance(focusNode.simdPosition,
+                                 simd_make_float3(transform.m41, transform.m42, transform.m43))
+    let direction = SCNVector3(-(distance * 2.5) * transform.m31,
+                               -(distance * 2.5) * (transform.m32 - Float.pi / 4),
+                               -(distance * 2.5) * transform.m33)
+
+    diceNode.name = .diceNodeName
+    diceNode.position = position
+    diceNode.eulerAngles = rotation
+    diceNode.physicsBody?.resetTransform()
+    diceNode.physicsBody?.applyForce(direction, asImpulse: true)
+    p. 131
     completion(diceNode)
     currentDiceCount += 1
   }

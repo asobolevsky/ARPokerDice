@@ -10,7 +10,8 @@ import UIKit
 import SceneKit
 import ARKit
 
-let kDefaultWorldSpeed: CGFloat = 0.05
+let kDefaultWorldSpeed: CGFloat = 1
+let kDiceCount: Int = 5
 
 class ViewController: UIViewController {
 
@@ -21,9 +22,7 @@ class ViewController: UIViewController {
     }
   }
 
-  let game = Game()
-  var diceCount: Int = 5
-  var diceStyle: Int = 0
+  let game = Game(diceCount: kDiceCount)
   var diceOffset: [SCNVector3] = [SCNVector3(0.0,0.0,0.0),
                                   SCNVector3(-0.15, 0.00, 0.0),
                                   SCNVector3(0.15, 0.00, 0.0),
@@ -36,6 +35,7 @@ class ViewController: UIViewController {
 
   @IBOutlet var sceneView: ARSCNView!
   @IBOutlet var statusLabel: UILabel!
+  @IBOutlet var hudLabel: UILabel!
 
 
   // MARK: - IBActions
@@ -53,7 +53,7 @@ class ViewController: UIViewController {
       return
     }
 
-    for i in 0..<diceCount {
+    for i in 0..<game.maxDiceCount {
       throwDice(transform: SCNMatrix4(frame.camera.transform), offset: diceOffset[i])
     }
   }
@@ -98,7 +98,7 @@ class ViewController: UIViewController {
 
           for (option, value) in sliderOptionValues {
             switch option {
-              case .worldSpeed: self?.sceneView.scene.physicsWorld.speed = value
+            case .worldSpeed: self?.sceneView.scene.physicsWorld.speed = value
             }
           }
         }
@@ -149,7 +149,9 @@ class ViewController: UIViewController {
 
   private func initGame() {
     game.loadModels(into: sceneView.scene)
-    game.stateUpdateCallback = updateStatusChange
+    game.gameStateDidChange = handleGameStateChange
+    game.stateDidChange = updateHUDLabel
+    updateHUDLabel()
   }
 
   private func adjustFocusPoint() {
@@ -206,23 +208,35 @@ class ViewController: UIViewController {
     planeGeometry.materials = [planeMaterial]
 
     let planeNode = SCNNode(geometry: planeGeometry)
+    planeNode.name = .planeNodeName
     planeNode.position = SCNVector3(planeAnchor.center.x, 0, planeAnchor.center.z)
     planeNode.transform = SCNMatrix4MakeRotation(-Float.pi / 2, 1, 0, 0)
+    planeNode.physicsBody = createARPlanePhysics(geometry: planeGeometry)
 
     return planeNode
+  }
+
+  private func createARPlanePhysics(geometry: SCNGeometry) -> SCNPhysicsBody {
+    let physicsBody = SCNPhysicsBody(type: .kinematic,
+                                     shape: SCNPhysicsShape(geometry: geometry, options: nil))
+    physicsBody.restitution = 0.5
+    physicsBody.friction = 0.5
+    return physicsBody
   }
 
   private func updateARPlaneNode(planeNode: SCNNode, planeAnchor: ARPlaneAnchor) {
     if let planeGeometry = planeNode.geometry as? SCNPlane {
       planeGeometry.width = CGFloat(planeAnchor.extent.x)
       planeGeometry.height = CGFloat(planeAnchor.extent.z)
+      planeNode.physicsBody = nil
+      planeNode.physicsBody = createARPlanePhysics(geometry: planeGeometry)
     }
 
     planeNode.position = SCNVector3Make(planeAnchor.center.x, 0, planeAnchor.center.z)
   }
 
   private func removeARPlaneNode(node: SCNNode) {
-
+    node.removeFromParentNode()
   }
 
   private func updateFocusNode() {
@@ -241,6 +255,15 @@ class ViewController: UIViewController {
     }
   }
 
+  private func updateDiceNode() {
+    sceneView.scene.rootNode.childNodes { node, _ in node.name == .diceNodeName }
+      .filter { $0.presentation.position.y < -2 }
+      .forEach { node in
+        node.removeFromParentNode()
+        game.currentDiceCount -= 1
+    }
+  }
+
 
   // MARK: - UI
 
@@ -250,7 +273,7 @@ class ViewController: UIViewController {
     }
   }
 
-  private func updateStatusChange(for newState: GameState) {
+  private func handleGameStateChange(oldState: GameState, newState: GameState) {
     DispatchQueue.main.async {
       let statusMessage: String
 
@@ -272,12 +295,19 @@ class ViewController: UIViewController {
     }
   }
 
-  private func showOverlay() {
-    coachingOverlay.setActive(true, animated: true)
+  private func updateHUDLabel() {
+    DispatchQueue.main.async {
+      var text = ""
+      text += "Dice Count: \(self.game.currentDiceCount)/\(self.game.maxDiceCount)"
+      self.hudLabel.text = text
+    }
   }
 
-  private func hideOverlay() {
-    coachingOverlay.setActive(false, animated: true)
+  private func updateSceneNodesVisibility(isHidden: Bool) {
+    game.focusNode.isHidden = isHidden
+    sceneView.scene.rootNode
+      .childNodes { node, _ in node.name == .planeNodeName }
+      .forEach { $0.isHidden = isHidden }
   }
 
 }
@@ -289,12 +319,10 @@ extension ViewController: ARSCNViewDelegate {
 
   func sessionWasInterrupted(_ session: ARSession) {
     trackingStatus = "AR Session Was Interrupted!"
-    showOverlay()
   }
 
   func sessionInterruptionEnded(_ session: ARSession) {
     trackingStatus = "AR Session Interruption Ended"
-    hideOverlay()
   }
 
   func session(_ session: ARSession, didFailWithError error: Error) {
@@ -329,6 +357,7 @@ extension ViewController: ARSCNViewDelegate {
 
   func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
     updateFocusNode()
+    updateDiceNode()
   }
 
   func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
@@ -367,11 +396,11 @@ extension ViewController: ARSCNViewDelegate {
 
 extension ViewController: ARCoachingOverlayViewDelegate {
   func coachingOverlayViewWillActivate(_ coachingOverlayView: ARCoachingOverlayView) {
-
+    updateSceneNodesVisibility(isHidden: true)
   }
 
   func coachingOverlayViewDidDeactivate(_ coachingOverlayView: ARCoachingOverlayView) {
-
+    updateSceneNodesVisibility(isHidden: false)
   }
 
   func coachingOverlayViewDidRequestSessionReset(_ coachingOverlayView: ARCoachingOverlayView) {

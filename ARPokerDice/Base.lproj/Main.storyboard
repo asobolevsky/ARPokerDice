@@ -96,10 +96,20 @@
                                     </segue>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dice count: 5" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pnx-Xz-y52">
+                                <rect key="frame" x="156.5" y="133" width="101.5" height="20.5"/>
+                                <color key="backgroundColor" white="1" alpha="0.25" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="6Xg-8G-JwI" firstAttribute="leading" secondItem="fQZ-KI-GVf" secondAttribute="leading" constant="16" id="0lZ-fY-GBX"/>
+                            <constraint firstItem="pnx-Xz-y52" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="6Xg-8G-JwI" secondAttribute="trailing" constant="20" id="2mo-yK-a8M"/>
+                            <constraint firstItem="pnx-Xz-y52" firstAttribute="centerX" secondItem="BrB-h1-WRS" secondAttribute="centerX" id="4uT-eN-pjc"/>
+                            <constraint firstItem="CHY-6K-fQA" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="pnx-Xz-y52" secondAttribute="trailing" constant="20" id="EZ3-Bz-da6"/>
                             <constraint firstItem="BrB-h1-WRS" firstAttribute="leading" secondItem="fQZ-KI-GVf" secondAttribute="leading" id="GsS-dJ-CKf"/>
                             <constraint firstItem="fQZ-KI-GVf" firstAttribute="trailing" secondItem="yeL-BA-dHB" secondAttribute="trailing" constant="16" id="JcA-t4-asq"/>
                             <constraint firstItem="fQZ-KI-GVf" firstAttribute="trailing" secondItem="7V4-ga-bEx" secondAttribute="trailing" id="QRv-jF-LGa"/>
@@ -109,6 +119,7 @@
                             <constraint firstItem="7V4-ga-bEx" firstAttribute="top" secondItem="BrB-h1-WRS" secondAttribute="top" id="bWW-Wr-34e"/>
                             <constraint firstItem="CHY-6K-fQA" firstAttribute="top" secondItem="7V4-ga-bEx" secondAttribute="bottom" constant="8" id="ddE-qq-0al"/>
                             <constraint firstItem="6Xg-8G-JwI" firstAttribute="top" secondItem="7V4-ga-bEx" secondAttribute="bottom" constant="8" id="kzK-cU-241"/>
+                            <constraint firstItem="pnx-Xz-y52" firstAttribute="top" secondItem="MjB-7x-yaO" secondAttribute="bottom" constant="18" id="ocE-7l-xAM"/>
                             <constraint firstItem="7V4-ga-bEx" firstAttribute="leading" secondItem="fQZ-KI-GVf" secondAttribute="leading" id="rFv-Qq-AsY"/>
                             <constraint firstItem="BrB-h1-WRS" firstAttribute="top" secondItem="U0K-SW-4ec" secondAttribute="top" id="rJc-2c-zQA"/>
                             <constraint firstItem="MjB-7x-yaO" firstAttribute="top" secondItem="fQZ-KI-GVf" secondAttribute="top" constant="21" id="ri5-WA-DZa"/>
@@ -117,6 +128,7 @@
                         <viewLayoutGuide key="safeArea" id="fQZ-KI-GVf"/>
                     </view>
                     <connections>
+                        <outlet property="hudLabel" destination="pnx-Xz-y52" id="KkF-h8-W34"/>
                         <outlet property="sceneView" destination="BrB-h1-WRS" id="5nT-qQ-ynl"/>
                         <outlet property="statusLabel" destination="iv5-cH-15x" id="IvZ-mF-d0b"/>
                     </connections>

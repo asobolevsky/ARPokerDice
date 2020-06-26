@@ -10,6 +10,8 @@
 		B4136A39247EBEA900A8F73F /* Planets.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = B4136A38247EBEA900A8F73F /* Planets.scnassets */; };
 		B4136A3B247EDB3000A8F73F /* DebugOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4136A3A247EDB3000A8F73F /* DebugOptionsViewController.swift */; };
 		B4136A3D247EDE3400A8F73F /* DebugSwitchOptionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4136A3C247EDE3400A8F73F /* DebugSwitchOptionTableViewCell.swift */; };
+		B41DA10924A6102200F535B5 /* Double+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B41DA10824A6102200F535B5 /* Double+Extension.swift */; };
+		B41DA10B24A6107200F535B5 /* String+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B41DA10A24A6107200F535B5 /* String+Constants.swift */; };
 		B439C5E4247D80100062C752 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B439C5E3247D80100062C752 /* AppDelegate.swift */; };
 		B439C5E8247D80110062C752 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B439C5E7247D80110062C752 /* ViewController.swift */; };
 		B439C5EB247D80110062C752 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B439C5E9247D80110062C752 /* Main.storyboard */; };
@@ -24,6 +26,8 @@
 		B4136A38247EBEA900A8F73F /* Planets.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Planets.scnassets; sourceTree = "<group>"; };
 		B4136A3A247EDB3000A8F73F /* DebugOptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugOptionsViewController.swift; sourceTree = "<group>"; };
 		B4136A3C247EDE3400A8F73F /* DebugSwitchOptionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugSwitchOptionTableViewCell.swift; sourceTree = "<group>"; };
+		B41DA10824A6102200F535B5 /* Double+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Extension.swift"; sourceTree = "<group>"; };
+		B41DA10A24A6107200F535B5 /* String+Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Constants.swift"; sourceTree = "<group>"; };
 		B439C5E0247D80100062C752 /* ARPokerDice.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARPokerDice.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B439C5E3247D80100062C752 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B439C5E7247D80110062C752 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -47,6 +51,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B41DA10724A6101000F535B5 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				B41DA10824A6102200F535B5 /* Double+Extension.swift */,
+				B41DA10A24A6107200F535B5 /* String+Constants.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		B439C5D7247D80100062C752 = {
 			isa = PBXGroup;
 			children = (
@@ -69,6 +82,7 @@
 		B439C5E2247D80100062C752 /* ARPokerDice */ = {
 			isa = PBXGroup;
 			children = (
+				B41DA10724A6101000F535B5 /* Extensions */,
 				B4136A38247EBEA900A8F73F /* Planets.scnassets */,
 				B439C5F7247D8C2F0062C752 /* PokerDice.scnassets */,
 				B439C5E3247D80100062C752 /* AppDelegate.swift */,
@@ -158,8 +172,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B41DA10B24A6107200F535B5 /* String+Constants.swift in Sources */,
 				B4136A3D247EDE3400A8F73F /* DebugSwitchOptionTableViewCell.swift in Sources */,
 				B43D3E652485590400B690F2 /* Game.swift in Sources */,
+				B41DA10924A6102200F535B5 /* Double+Extension.swift in Sources */,
 				B4136A3B247EDB3000A8F73F /* DebugOptionsViewController.swift in Sources */,
 				B4D174B124A51793005A0EA8 /* DebugSliderOptionTableViewCell.swift in Sources */,
 				B439C5E8247D80110062C752 /* ViewController.swift in Sources */,
