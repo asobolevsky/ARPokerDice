@@ -201,7 +201,7 @@ class ViewController: UIViewController {
       coachingOverlay.bottomAnchor.constraint(equalTo: view.bottomAnchor),
     ])
   }
-  
+  p. 139
   // MARK: - Helper functions
   
   private func startGame() {
