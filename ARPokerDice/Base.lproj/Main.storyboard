@@ -142,7 +142,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="808"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="debugSwitchOption" rowHeight="80" id="0uR-uE-zwp" customClass="DebugSwitchOptionTableViewCell">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="debugSwitchOption" rowHeight="80" id="0uR-uE-zwp" customClass="DebugSwitchOptionTableViewCell" customModule="ARPokerDice" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="414" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="0uR-uE-zwp" id="qie-if-uJI">
@@ -160,9 +160,6 @@
                                                         </label>
                                                         <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Hxi-4z-0Z9">
                                                             <rect key="frame" x="333" y="0.0" width="51" height="64"/>
-                                                            <connections>
-                                                                <action selector="onSwitchValueChanged:" destination="0uR-uE-zwp" eventType="valueChanged" id="yVM-xg-9X1"/>
-                                                            </connections>
                                                         </switch>
                                                     </subviews>
                                                     <constraints>
@@ -178,7 +175,8 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="selectedSwitch" destination="Hxi-4z-0Z9" id="Ziz-Qt-LyK"/>
+                                            <outlet property="descriptionLabel" destination="Va3-QA-6qe" id="1kq-Xw-6qj"/>
+                                            <outlet property="selectedSwitch" destination="Hxi-4z-0Z9" id="TfD-T8-1NY"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="debugSliderOption" rowHeight="80" id="ZRo-QC-MoX" customClass="DebugSliderOptionTableViewCell" customModule="ARPokerDice" customModuleProvider="target">

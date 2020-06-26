@@ -129,6 +129,7 @@ class ViewController: UIViewController {
     let scene = SCNScene()
     scene.isPaused = false
     scene.physicsWorld.speed = kDefaultWorldSpeed
+    scene.physicsWorld.timeStep = 1.0 / 60.0
     sceneView.scene = scene
   }
 

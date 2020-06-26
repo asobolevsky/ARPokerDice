@@ -137,7 +137,6 @@ extension DebugOptionsViewController: UITableViewDataSource {
   }
 
   private func configureSwitchOptionCell(in tableView: UITableView, for indexPath: IndexPath) -> DebugSwitchOptionTableViewCell {
-    print(tableView.dequeueReusableCell(withIdentifier: .debugSwitchOptionCellIdentifier, for: indexPath))
     let cell = tableView.dequeueReusableCell(withIdentifier: .debugSwitchOptionCellIdentifier, for: indexPath) as! DebugSwitchOptionTableViewCell
 
     let option = switchDebugOptions[indexPath.row]
