@@ -25,7 +25,9 @@ class ViewController: UIViewController {
   let game = Game(diceCount: kDiceCount)
   var focusPoint: CGPoint = .zero
   var gameHasStarted = false
-  var coachingOverlay: ARCoachingOverlayView!
+  var selectedPlane: SCNNode?
+  var coachingOverlay: ARCoachingOverlayView?
+  
   
   // MARK: - Outlets
   
@@ -61,6 +63,7 @@ class ViewController: UIViewController {
     throwDice(transform: SCNMatrix4(frame.camera.transform))
   }
   
+  
   // MARK: - Lifecycle
   
   override func viewDidLoad() {
@@ -94,12 +97,21 @@ class ViewController: UIViewController {
         return
       }
       
-      guard hit.node.name == .diceNodeName else {
+      let hitNode = hit.node
+      guard let hitNodeName = hitNode.name else {
         return
       }
       
-      hit.node.removeFromParentNode()
-      self.game.currentDiceCount -= 1
+      switch hitNodeName {
+      case .diceNodeName:
+        hitNode.removeFromParentNode()
+        self.game.currentDiceCount -= 1
+        
+      case .planeNodeName:
+        self.selectedPlane = hitNode
+      
+      default: print("Tapped unknown node")
+      }
     }
   }
   
@@ -133,6 +145,7 @@ class ViewController: UIViewController {
   deinit {
     NotificationCenter.default.removeObserver(self)
   }
+  
   
   // MARK: - Initialization
   
@@ -186,7 +199,7 @@ class ViewController: UIViewController {
   }
   
   private func initCoachingOverlayView() {
-    coachingOverlay = ARCoachingOverlayView()
+    let coachingOverlay = ARCoachingOverlayView()
     coachingOverlay.session = sceneView.session
     coachingOverlay.activatesAutomatically = true
     coachingOverlay.goal = .horizontalPlane
@@ -200,8 +213,9 @@ class ViewController: UIViewController {
       coachingOverlay.topAnchor.constraint(equalTo: view.topAnchor),
       coachingOverlay.bottomAnchor.constraint(equalTo: view.bottomAnchor),
     ])
+    self.coachingOverlay = coachingOverlay
   }
-  p. 139
+  
   // MARK: - Helper functions
   
   private func startGame() {
@@ -213,7 +227,7 @@ class ViewController: UIViewController {
       self.gameHasStarted = true
       self.startButton.isHidden = true
       self.suspendARPlaneDetection()
-      self.hideARPlaneNode()
+      self.removeUnusedARPlaneNodes()
       self.game.start()
     }
   }
@@ -256,6 +270,7 @@ class ViewController: UIViewController {
     planeNode.position = SCNVector3(planeAnchor.center.x, 0, planeAnchor.center.z)
     planeNode.transform = SCNMatrix4MakeRotation(-Float.pi / 2, 1, 0, 0)
     planeNode.physicsBody = createARPlanePhysics(geometry: planeGeometry)
+    planeNode.categoryBitMask = ModelCategory.plane.rawValue
     
     return planeNode
   }
@@ -301,8 +316,11 @@ class ViewController: UIViewController {
     sceneView.session.run(config, options: [ .resetTracking, .removeExistingAnchors ])
   }
   
-  private func hideARPlaneNode() {
-    guard let frame = sceneView.session.currentFrame else {
+  private func removeUnusedARPlaneNodes() {
+    guard
+      let selectedPlane = selectedPlane,
+      let frame = sceneView.session.currentFrame
+    else {
       return
     }
     
@@ -311,18 +329,28 @@ class ViewController: UIViewController {
         var children = children
         children.append(contentsOf: node.childNodes)
         return children
-    }.compactMap { $0.geometry?.materials.first }
-      .forEach { $0.colorBufferWriteMask = .init(rawValue: 0) }
+    }
+      .forEach { plane in
+        let isSelectedPlane = (plane == selectedPlane)
+        if isSelectedPlane == false {
+          removeARPlaneNode(node: plane)
+        }
+      }
+      
+    let firstMaterial = selectedPlane.geometry?.firstMaterial
+    firstMaterial?.diffuse.contents = UIColor.systemYellow.withAlphaComponent(0.5)
   }
   
   private func updateFocusNode() {
-    let result = sceneView.hitTest(focusPoint, types: [.existingPlaneUsingExtent])
-    
-    if result.count == 1, let match = result.first {
-      let t = match.worldTransform
-      game.focusNode.position = SCNVector3(x: t.columns.3.x,
-                                           y: t.columns.3.y,
-                                           z: t.columns.3.z)
+    let hitTestOptions: [SCNHitTestOption: Any] = [
+      .categoryBitMask : ModelCategory.plane.rawValue,
+      .searchMode: SCNHitTestSearchMode.all.rawValue
+    ]
+    let result = sceneView.hitTest(focusPoint, options: hitTestOptions)
+    if let match = result.first {
+      selectedPlane = match.node
+      
+      game.focusNode.position = match.worldCoordinates
       if gameHasStarted {
         game.gameState = .swipeToPlay
       }
@@ -432,6 +460,7 @@ extension ViewController: ARSCNViewDelegate {
     }
   }
   
+  
   // MARK: - Plane management
   
   func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
@@ -470,6 +499,7 @@ extension ViewController: ARSCNViewDelegate {
     }
   }
 }
+
 
 // MARK: - ARCoachingOverlayViewDelegate
 
