@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		5F84D7E425AFCA14005913CD /* ModelCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F84D7E325AFCA14005913CD /* ModelCategory.swift */; };
+		5F84D7EA25AFD5C9005913CD /* SCNNode+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F84D7E925AFD5C9005913CD /* SCNNode+Extension.swift */; };
 		B4136A39247EBEA900A8F73F /* Planets.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = B4136A38247EBEA900A8F73F /* Planets.scnassets */; };
 		B4136A3B247EDB3000A8F73F /* DebugOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4136A3A247EDB3000A8F73F /* DebugOptionsViewController.swift */; };
 		B4136A3D247EDE3400A8F73F /* DebugSwitchOptionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4136A3C247EDE3400A8F73F /* DebugSwitchOptionTableViewCell.swift */; };
@@ -25,6 +26,7 @@
 
 /* Begin PBXFileReference section */
 		5F84D7E325AFCA14005913CD /* ModelCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelCategory.swift; sourceTree = "<group>"; };
+		5F84D7E925AFD5C9005913CD /* SCNNode+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SCNNode+Extension.swift"; sourceTree = "<group>"; };
 		B4136A38247EBEA900A8F73F /* Planets.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Planets.scnassets; sourceTree = "<group>"; };
 		B4136A3A247EDB3000A8F73F /* DebugOptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugOptionsViewController.swift; sourceTree = "<group>"; };
 		B4136A3C247EDE3400A8F73F /* DebugSwitchOptionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugSwitchOptionTableViewCell.swift; sourceTree = "<group>"; };
@@ -58,6 +60,7 @@
 			children = (
 				B41DA10824A6102200F535B5 /* Double+Extension.swift */,
 				B41DA10A24A6107200F535B5 /* String+Constants.swift */,
+				5F84D7E925AFD5C9005913CD /* SCNNode+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -177,6 +180,7 @@
 			files = (
 				B41DA10B24A6107200F535B5 /* String+Constants.swift in Sources */,
 				B4136A3D247EDE3400A8F73F /* DebugSwitchOptionTableViewCell.swift in Sources */,
+				5F84D7EA25AFD5C9005913CD /* SCNNode+Extension.swift in Sources */,
 				5F84D7E425AFCA14005913CD /* ModelCategory.swift in Sources */,
 				B43D3E652485590400B690F2 /* Game.swift in Sources */,
 				B41DA10924A6102200F535B5 /* Double+Extension.swift in Sources */,

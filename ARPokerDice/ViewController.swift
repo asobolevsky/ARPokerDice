@@ -227,7 +227,7 @@ class ViewController: UIViewController {
       self.gameHasStarted = true
       self.startButton.isHidden = true
       self.suspendARPlaneDetection()
-      self.removeUnusedARPlaneNodes()
+      self.prepareSelectedPlane()
       self.game.start()
     }
   }
@@ -294,10 +294,6 @@ class ViewController: UIViewController {
     planeNode.position = SCNVector3Make(planeAnchor.center.x, 0, planeAnchor.center.z)
   }
   
-  private func removeARPlaneNode(node: SCNNode) {
-    node.removeFromParentNode()
-  }
-  
   private func suspendARPlaneDetection() {
     guard let config = sceneView.session.configuration as? ARWorldTrackingConfiguration else {
       return
@@ -314,31 +310,6 @@ class ViewController: UIViewController {
     
     config.planeDetection = .horizontal
     sceneView.session.run(config, options: [ .resetTracking, .removeExistingAnchors ])
-  }
-  
-  private func removeUnusedARPlaneNodes() {
-    guard
-      let selectedPlane = selectedPlane,
-      let frame = sceneView.session.currentFrame
-    else {
-      return
-    }
-    
-    frame.anchors.compactMap { sceneView.node(for: $0) }
-      .reduce([SCNNode]()) { (children, node) in
-        var children = children
-        children.append(contentsOf: node.childNodes)
-        return children
-    }
-      .forEach { plane in
-        let isSelectedPlane = (plane == selectedPlane)
-        if isSelectedPlane == false {
-          removeARPlaneNode(node: plane)
-        }
-      }
-      
-    let firstMaterial = selectedPlane.geometry?.firstMaterial
-    firstMaterial?.diffuse.contents = UIColor.systemYellow.withAlphaComponent(0.5)
   }
   
   private func updateFocusNode() {
@@ -495,8 +466,46 @@ extension ViewController: ARSCNViewDelegate {
     }
     print("Did remove plane")
     DispatchQueue.main.async {
-      self.removeARPlaneNode(node: planeNode)
+      self.removeARPlaneNode(planeNode)
     }
+  }
+  
+  private func prepareSelectedPlane() {
+    guard let selectedPlane = selectedPlane else {
+      return
+    }
+    
+    removeUnusedARPlaneNodes(ignore: [selectedPlane])
+    highlightARPlaneNode(selectedPlane)
+  }
+  
+  private func removeARPlaneNode(_ node: SCNNode) {
+    node.removeFromParentNode()
+  }
+  
+  private func highlightARPlaneNode(_ node: SCNNode) {
+    let firstMaterial = node.geometry?.firstMaterial
+    firstMaterial?.diffuse.contents = UIColor.systemYellow.withAlphaComponent(0.5)
+    node.addHightlightBorder()
+  }
+  
+  private func removeUnusedARPlaneNodes(ignore ignoreNodes: [SCNNode] = []) {
+    guard let frame = sceneView.session.currentFrame else {
+      return
+    }
+    
+    frame.anchors.compactMap { sceneView.node(for: $0) }
+      .reduce([SCNNode]()) { (children, node) in
+        var children = children
+        children.append(contentsOf: node.childNodes)
+        return children
+    }
+      .forEach { plane in
+        let shouldDeletePlane = (ignoreNodes.contains(plane) == false)
+        if shouldDeletePlane {
+          removeARPlaneNode(plane)
+        }
+      }
   }
 }
 
