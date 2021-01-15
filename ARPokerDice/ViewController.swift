@@ -98,7 +98,7 @@ class ViewController: UIViewController {
       }
       
       let hitNode = hit.node
-      guard let hitNodeName = hitNode.name else {
+      guard let hitNodeName = hitNode.name?.split(separator: "_").first else {
         return
       }
       
@@ -109,7 +109,7 @@ class ViewController: UIViewController {
         
       case .planeNodeName:
         self.selectedPlane = hitNode
-      
+        
       default: print("Tapped unknown node")
       }
     }
@@ -165,6 +165,7 @@ class ViewController: UIViewController {
     scene.isPaused = false
     scene.physicsWorld.speed = kDefaultWorldSpeed
     scene.physicsWorld.timeStep = 1.0 / 60.0
+    scene.physicsWorld.contactDelegate = self
     sceneView.scene = scene
   }
   
@@ -276,10 +277,11 @@ class ViewController: UIViewController {
   }
   
   private func createARPlanePhysics(geometry: SCNGeometry) -> SCNPhysicsBody {
-    let physicsBody = SCNPhysicsBody(type: .kinematic,
-                                     shape: SCNPhysicsShape(geometry: geometry, options: nil))
+    let physicsShape = SCNPhysicsShape(geometry: geometry, options: nil)
+    let physicsBody = SCNPhysicsBody(type: .kinematic, shape: physicsShape)
     physicsBody.restitution = 0.5
     physicsBody.friction = 0.5
+    physicsBody.categoryBitMask = ModelCategory.plane.rawValue
     return physicsBody
   }
   
@@ -333,12 +335,12 @@ class ViewController: UIViewController {
   }
   
   private func updateDiceNode() {
-    sceneView.scene.rootNode.childNodes { node, _ in node.name == .diceNodeName }
+    sceneView.scene.rootNode.childNodes { node, _ in node.name?.starts(with: String.diceNodeName) ?? false }
       .filter { $0.presentation.position.y < -2 }
       .forEach { node in
         node.removeFromParentNode()
         game.currentDiceCount -= 1
-    }
+      }
   }
   
   
@@ -443,7 +445,7 @@ extension ViewController: ARSCNViewDelegate {
     guard let planeAnchor = anchor as? ARPlaneAnchor else {
       return
     }
-    print("Did add plane")
+    
     DispatchQueue.main.async {
       let planeNode = self.createARPlaneNode(planeAnchor: planeAnchor, color: UIColor.yellow.withAlphaComponent(0.5))
       node.addChildNode(planeNode)
@@ -454,7 +456,7 @@ extension ViewController: ARSCNViewDelegate {
     guard let planeNode = node.childNodes.first, let planeAnchor = anchor as? ARPlaneAnchor else {
       return
     }
-    print("Did update plane")
+    
     DispatchQueue.main.async {
       self.updateARPlaneNode(planeNode: planeNode, planeAnchor: planeAnchor)
     }
@@ -464,7 +466,7 @@ extension ViewController: ARSCNViewDelegate {
     guard let planeNode = node.childNodes.first else {
       return
     }
-    print("Did remove plane")
+    
     DispatchQueue.main.async {
       self.removeARPlaneNode(planeNode)
     }
@@ -499,13 +501,62 @@ extension ViewController: ARSCNViewDelegate {
         var children = children
         children.append(contentsOf: node.childNodes)
         return children
-    }
+      }
       .forEach { plane in
         let shouldDeletePlane = (ignoreNodes.contains(plane) == false)
         if shouldDeletePlane {
           removeARPlaneNode(plane)
         }
       }
+  }
+}
+
+// TODO: - add invisible spheres to each side of the dice, and track which one contacts with the plane
+
+
+// MARK: - SCNPhysicsContactDelegate
+
+extension ViewController: SCNPhysicsContactDelegate {
+  private func isContact(_ contact: SCNPhysicsContact,
+                         between categoryA: ModelCategory,
+                         and categoryB: ModelCategory) -> Bool {
+    guard
+      let physicsBodyA = contact.nodeA.physicsBody,
+      let physicsBodyB = contact.nodeB.physicsBody
+    else {
+      return false
+    }
+    
+    return (physicsBodyA.categoryBitMask | physicsBodyB.categoryBitMask) ==
+      (categoryA.rawValue | categoryB.rawValue)
+  }
+  
+  private func node(with category: ModelCategory, in contact: SCNPhysicsContact) -> SCNNode? {
+    if contact.nodeA.physicsBody?.categoryBitMask == category.rawValue {
+      return contact.nodeA
+    }
+    
+    if contact.nodeB.physicsBody?.categoryBitMask == category.rawValue {
+      return contact.nodeB
+    }
+    
+    return nil
+  }
+  
+  func physicsWorld(_ world: SCNPhysicsWorld, didBegin contact: SCNPhysicsContact) {
+    if isContact(contact, between: .diceFace, and: .plane) {
+      guard
+        let diceFaceNode = node(with: .diceFace, in: contact),
+        let diceNodeIndexString = diceFaceNode.parent?.name?.split(separator: "_").last,
+        let diceNodeIndex = Int(diceNodeIndexString),
+        let diceValue = game.extractDicePokerValue(from: diceFaceNode)
+      else {
+        return
+      }
+      
+      game.userValues[diceNodeIndex] = diceValue
+      print(game.userValues)
+    }
   }
 }
 

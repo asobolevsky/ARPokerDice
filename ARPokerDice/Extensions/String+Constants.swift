@@ -11,4 +11,5 @@ import Foundation
 extension String {
   static let planeNodeName = "plane"
   static let diceNodeName = "dice"
+  static let diceFaceIndicatorNodeName = "diceFaceIndicator"
 }
