@@ -120,6 +120,13 @@
                                     <action selector="onStartButtonPressed:" destination="BV1-FR-VrT" eventType="touchUpInside" id="ntY-Lt-FrJ"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Score: []" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="loe-99-KSd">
+                                <rect key="frame" x="174.5" y="169.5" width="65.5" height="20.5"/>
+                                <color key="backgroundColor" white="1" alpha="0.25" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="fQZ-KI-GVf"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -128,8 +135,10 @@
                             <constraint firstItem="fQZ-KI-GVf" firstAttribute="bottom" secondItem="lK5-VR-kbL" secondAttribute="bottom" constant="16" id="2Nu-Lp-l9g"/>
                             <constraint firstItem="pnx-Xz-y52" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="6Xg-8G-JwI" secondAttribute="trailing" constant="20" id="2mo-yK-a8M"/>
                             <constraint firstItem="pnx-Xz-y52" firstAttribute="centerX" secondItem="BrB-h1-WRS" secondAttribute="centerX" id="4uT-eN-pjc"/>
+                            <constraint firstItem="loe-99-KSd" firstAttribute="centerX" secondItem="U0K-SW-4ec" secondAttribute="centerX" id="AOs-X7-RBZ"/>
                             <constraint firstItem="CHY-6K-fQA" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="pnx-Xz-y52" secondAttribute="trailing" constant="20" id="EZ3-Bz-da6"/>
                             <constraint firstItem="BrB-h1-WRS" firstAttribute="leading" secondItem="fQZ-KI-GVf" secondAttribute="leading" id="GsS-dJ-CKf"/>
+                            <constraint firstItem="loe-99-KSd" firstAttribute="top" secondItem="pnx-Xz-y52" secondAttribute="bottom" constant="16" id="Lme-vB-Fer"/>
                             <constraint firstItem="fQZ-KI-GVf" firstAttribute="trailing" secondItem="7V4-ga-bEx" secondAttribute="trailing" id="QRv-jF-LGa"/>
                             <constraint firstItem="BrB-h1-WRS" firstAttribute="bottom" secondItem="U0K-SW-4ec" secondAttribute="bottom" id="VpT-BR-CcM"/>
                             <constraint firstItem="fQZ-KI-GVf" firstAttribute="trailing" secondItem="lK5-VR-kbL" secondAttribute="trailing" constant="16" id="Xaq-dO-aPF"/>
@@ -148,6 +157,7 @@
                     <connections>
                         <outlet property="hudLabel" destination="pnx-Xz-y52" id="KkF-h8-W34"/>
                         <outlet property="sceneView" destination="BrB-h1-WRS" id="5nT-qQ-ynl"/>
+                        <outlet property="scoreLabel" destination="loe-99-KSd" id="gdj-k6-RaC"/>
                         <outlet property="startButton" destination="lK5-VR-kbL" id="cUj-1C-XYJ"/>
                         <outlet property="statusLabel" destination="iv5-cH-15x" id="IvZ-mF-d0b"/>
                     </connections>

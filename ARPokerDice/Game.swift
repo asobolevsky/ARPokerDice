@@ -18,7 +18,7 @@ enum BoxFace: Int {
 }
 
 enum PokerDiceValue: Int {
-  case nine, ten, jack, queen, king, ace
+  case none, nine, ten, jack, queen, king, ace
 }
 
 enum DiceStyle: Int {
@@ -49,8 +49,8 @@ class Game {
     }
   }
   
-  lazy var userValues: [PokerDiceValue?] = {
-    return [PokerDiceValue?](repeating: nil, count: self.maxDiceCount)
+  lazy var userScore: [PokerDiceValue] = {
+    return [PokerDiceValue](repeating: .none, count: self.maxDiceCount)
   }()
   
   private var diceNodes: [DiceStyle: SCNNode] = [:]
@@ -168,6 +168,18 @@ class Game {
     }
     
     return pokerDiceValue(forContactedFace: contactedDiceFace)
+  }
+  
+  func stringForDiceValue(_ value: PokerDiceValue) -> String {
+    switch value {
+    case .none:   return "-"
+    case .nine:   return "9"
+    case .ten:    return "10"
+    case .jack:   return "J"
+    case .queen:  return "Q"
+    case .king:   return "K"
+    case .ace:    return "A"
+    }
   }
   
   

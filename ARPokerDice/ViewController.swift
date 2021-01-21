@@ -33,6 +33,7 @@ class ViewController: UIViewController {
   
   @IBOutlet var sceneView: ARSCNView!
   @IBOutlet var statusLabel: UILabel!
+  @IBOutlet var scoreLabel: UILabel!
   @IBOutlet var startButton: UIButton!
   @IBOutlet var hudLabel: UILabel!
   
@@ -104,6 +105,7 @@ class ViewController: UIViewController {
       
       switch hitNodeName {
       case .diceNodeName:
+        self.removeValueFromUserScore(for: hitNode)
         hitNode.removeFromParentNode()
         self.game.currentDiceCount -= 1
         
@@ -338,6 +340,7 @@ class ViewController: UIViewController {
     sceneView.scene.rootNode.childNodes { node, _ in node.name?.starts(with: String.diceNodeName) ?? false }
       .filter { $0.presentation.position.y < -2 }
       .forEach { node in
+        self.removeValueFromUserScore(for: node)
         node.removeFromParentNode()
         game.currentDiceCount -= 1
       }
@@ -349,6 +352,14 @@ class ViewController: UIViewController {
   private func updateStatusLabel() {
     DispatchQueue.main.async {
       self.statusLabel.text = self.trackingStatus
+    }
+  }
+  
+  private func updateUserScore() {
+    let score = self.game.userScore
+    let scoreValues = score.map { self.game.stringForDiceValue($0) }
+    DispatchQueue.main.async {
+      self.scoreLabel.text = "Score: \(scoreValues)"
     }
   }
   
@@ -509,6 +520,39 @@ extension ViewController: ARSCNViewDelegate {
         }
       }
   }
+  
+  private func extractDiceNodeIndex(from node: SCNNode) -> Int? {
+    guard
+      let diceNodeIndexString = node.name?.split(separator: "_").last,
+      let diceNodeIndex = Int(diceNodeIndexString)
+    else {
+      return nil
+    }
+    
+    return diceNodeIndex
+  }
+  
+  private func addValueToUserScore(for diceFaceNode: SCNNode) {
+    guard
+      let diceNode = diceFaceNode.parent,
+      let diceNodeIndex = extractDiceNodeIndex(from: diceNode),
+      let diceValue = game.extractDicePokerValue(from: diceFaceNode)
+    else {
+      return
+    }
+    
+    game.userScore[diceNodeIndex] = diceValue
+    updateUserScore()
+  }
+  
+  private func removeValueFromUserScore(for diceNode: SCNNode) {
+    guard let diceNodeIndex = extractDiceNodeIndex(from: diceNode) else {
+      return
+    }
+    
+    game.userScore[diceNodeIndex] = .none
+    updateUserScore()
+  }
 }
 
 // TODO: - add invisible spheres to each side of the dice, and track which one contacts with the plane
@@ -545,17 +589,11 @@ extension ViewController: SCNPhysicsContactDelegate {
   
   func physicsWorld(_ world: SCNPhysicsWorld, didBegin contact: SCNPhysicsContact) {
     if isContact(contact, between: .diceFace, and: .plane) {
-      guard
-        let diceFaceNode = node(with: .diceFace, in: contact),
-        let diceNodeIndexString = diceFaceNode.parent?.name?.split(separator: "_").last,
-        let diceNodeIndex = Int(diceNodeIndexString),
-        let diceValue = game.extractDicePokerValue(from: diceFaceNode)
-      else {
+      guard let diceFaceNode = node(with: .diceFace, in: contact) else {
         return
       }
-      
-      game.userValues[diceNodeIndex] = diceValue
-      print(game.userValues)
+
+      addValueToUserScore(for: diceFaceNode)
     }
   }
 }
